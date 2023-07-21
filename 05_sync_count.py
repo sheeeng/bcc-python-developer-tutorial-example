@@ -31,7 +31,7 @@ int do_trace(struct pt_regs *ctx) {
         delta = bpf_ktime_get_ns() - *tsp;
         if (delta < 1000000000) {
             // output if time is less than 1 second
-            bpf_trace_printk("%llu calls, %d\\n", c, delta / 1000000);
+            bpf_trace_printk("last %d ms ago, total %llu calls.\\n", delta / 1000000, c);
         }
         last.delete(&key);
     }
@@ -55,6 +55,6 @@ while 1:
         if start == 0:
             start = ts
         ts = ts - start
-        printb(b"At time %.2f s: multiple syncs detected, last %s ms ago" % (ts, ms))
+        printb(b"At time %.2f s: multiple syncs detected, %s" % (ts, ms))
     except KeyboardInterrupt:
         exit()
